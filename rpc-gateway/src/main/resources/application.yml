@@ -1,0 +1,43 @@
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 200
+
+spring:
+  application:
+    name: rpc-gateway
+  threads:
+    virtual:
+      enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+pulse:
+  rpc:
+    gzip-threshold-bytes: 512
+    timeout: 4s
+    max-in-flight: 2000
+
+resilience4j:
+  timelimiter:
+    instances:
+      enrichmentRpc:
+        timeoutDuration: 5s
+        cancelRunningFuture: true

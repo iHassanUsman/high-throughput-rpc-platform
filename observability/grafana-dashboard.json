@@ -1,0 +1,15 @@
+{
+  "title": "Pulse RPC",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "RPC client latency",
+      "targets": [{ "expr": "rate(pulse_rpc_client_latency_seconds_sum[1m])" }]
+    },
+    {
+      "type": "graph",
+      "title": "Queue depth",
+      "targets": [{ "expr": "pulse_rpc_queue_depth" }]
+    }
+  ]
+}

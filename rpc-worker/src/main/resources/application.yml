@@ -1,0 +1,37 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: rpc-worker
+  threads:
+    virtual:
+      enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        retry:
+          enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+pulse:
+  rpc:
+    gzip-threshold-bytes: 512
+  worker:
+    concurrent-consumers: ${WORKER_CONCURRENT:4}
+    max-concurrent-consumers: ${WORKER_MAX_CONCURRENT:32}
+    prefetch: ${WORKER_PREFETCH:10}
+    simulated-work-ms: ${WORKER_WORK_MS:25}
+    queue-metric-ms: 2000
